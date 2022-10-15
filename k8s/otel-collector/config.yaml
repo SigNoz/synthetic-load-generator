@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-config
+data:
+  config.yaml: |-
+    receivers:
+      jaeger:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:14250
+          thrift_http:
+            endpoint: 0.0.0.0:14268
+
+    processors:
+      batch:
+        send_batch_size: 10000
+        send_batch_max_size: 11000
+        timeout: 10s
+
+    extensions:
+      health_check:
+        endpoint: 0.0.0.0:13133
+      zpages:
+        endpoint: 0.0.0.0:55679
+      pprof:
+        endpoint: 0.0.0.0:1777
+
+    exporters:
+      otlp:
+        endpoint: stagingapp.signoz.io:4317
+        tls:
+          insecure: true
+
+    service:
+      telemetry:
+        metrics:
+          address: 0.0.0.0:8888
+      extensions:
+        - health_check
+        - zpages
+        - pprof
+      pipelines:
+        traces:
+          receivers: [jaeger]
+          processors: [batch]
+          exporters: [otlp]
+

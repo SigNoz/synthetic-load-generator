@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: synthetic-load
+  labels:
+    app: synthetic-load
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: synthetic-load
+  template:
+    metadata:
+      labels:
+        app: synthetic-load
+    spec:
+      containers:
+      - name: synthetic-load
+        image: signoz/synthetic-load-generator:latest
+        ports:
+        - containerPort: 80
+        # command: ["--logLevel=0"]
+        # args:
+        # - --logLevel=0
+        # - --jaegerCollectorUrl=http://stagingapp.signoz.io:14268
+        env:
+        - name: JAEGER_COLLECTOR_URL
+          value: http://stagingapp.signoz.io:14268
+        - name: TOPOLOGY_FILE
+          value: ./topologies/100_000_spans_per_second.json
