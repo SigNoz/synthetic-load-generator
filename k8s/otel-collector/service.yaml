@@ -9,7 +9,8 @@ spec:
   ports:
   - name: metrics # Default endpoint for querying metrics.
     port: 8888
-  - name: grpc 
-    port: 4317
+    targetPort: 8888
+  - name: jaeger 
+    port: 14268
   selector:
-    component: otel-collector
+    app: otel-collector

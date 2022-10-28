@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: otel-collector-config
 data:
-  config.yaml: |-
+  otel-collector-config.yaml: |-
     receivers:
       jaeger:
         protocols:
@@ -18,28 +18,27 @@ data:
         send_batch_max_size: 11000
         timeout: 10s
 
-    extensions:
-      health_check:
-        endpoint: 0.0.0.0:13133
-      zpages:
-        endpoint: 0.0.0.0:55679
-      pprof:
-        endpoint: 0.0.0.0:1777
-
     exporters:
       otlp:
-        endpoint: stagingapp.signoz.io:4317
+        endpoint: a9d02a61b9d2c405c81f6ce3ce0c9f5b-1350586386.us-east-2.elb.amazonaws.com:4317
         tls:
           insecure: true
+    # extensions:
+    #   health_check:
+    #     endpoint: 0.0.0.0:13133
+    #   zpages:
+    #     endpoint: 0.0.0.0:55679
+    #   pprof:
+    #     endpoint: 0.0.0.0:1777
 
     service:
-      telemetry:
-        metrics:
-          address: 0.0.0.0:8888
-      extensions:
-        - health_check
-        - zpages
-        - pprof
+      # telemetry:
+      #   metrics:
+      #     address: 0.0.0.0:8888
+      # extensions:
+      #   - health_check
+      #   - zpages
+      #   - pprof
       pipelines:
         traces:
           receivers: [jaeger]

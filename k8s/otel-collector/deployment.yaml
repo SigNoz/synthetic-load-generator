@@ -5,7 +5,7 @@ metadata:
   labels:
     app: otel-collector
 spec:
-  replicas: 1
+  replicas: 15
   selector:
     matchLabels:
       app: otel-collector
@@ -16,30 +16,18 @@ spec:
     spec:
       containers:
       - name: otel-collector
-        image: signoz/signoz-otel-collector:0.55.1
-        command: ["--config=/etc/otel-collector-config.yaml"]
+        image: signoz/signoz-otel-collector:0.55.3
         ports:
-        - containerPort: 4317
+        - containerPort: 14268
+        - containerPort: 8888
         args:
-        - "--config=/etc/otel-collector-config.yaml"
+        - "--config=/conf/otel-collector-config.yaml"
 
         volumeMounts:
-        - name: otel-agent-config-vol
-          mountPath: /etc/otel-collector-config.yaml
-          subPath: otel-collector-config.yaml
-        - name: varlog
-          mountPath: /var/log
-          readOnly: true
-        - name: varlibdockercontainers
-          mountPath: /var/lib/docker/containers
-          readOnly: true
+        - name: otel-collector-config-vol
+          mountPath: /conf
+
       volumes:
-      - name: otel-agent-config-vol
+      - name: otel-collector-config-vol
         configMap:
           name: otel-collector-config
-      - name: varlog
-        hostPath:
-          path: /var/log
-      - name: varlibdockercontainers
-        hostPath:
-          path: /var/lib/docker/containers

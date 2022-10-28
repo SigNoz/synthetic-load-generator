@@ -5,7 +5,7 @@ metadata:
   labels:
     app: synthetic-load
 spec:
-  replicas: 1
+  replicas: 8
   selector:
     matchLabels:
       app: synthetic-load
@@ -19,12 +19,9 @@ spec:
         image: signoz/synthetic-load-generator:latest
         ports:
         - containerPort: 80
-        # command: ["--logLevel=0"]
-        # args:
-        # - --logLevel=0
-        # - --jaegerCollectorUrl=http://stagingapp.signoz.io:14268
         env:
         - name: JAEGER_COLLECTOR_URL
-          value: http://stagingapp.signoz.io:14268
+          value: http://otel-collector:14268
         - name: TOPOLOGY_FILE
           value: ./topologies/100_000_spans_per_second.json
+          # value: ./topologies/hipster-shop.json
