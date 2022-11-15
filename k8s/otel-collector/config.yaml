@@ -16,11 +16,11 @@ data:
       batch:
         send_batch_size: 10000
         send_batch_max_size: 11000
-        timeout: 10s
+        timeout: 1s
 
     exporters:
       otlp:
-        endpoint: a9d02a61b9d2c405c81f6ce3ce0c9f5b-1350586386.us-east-2.elb.amazonaws.com:4317
+        endpoint: aaa34a0c20d9646068f209dc2ed2152e-901441042.us-east-2.elb.amazonaws.com:4317
         tls:
           insecure: true
     # extensions:

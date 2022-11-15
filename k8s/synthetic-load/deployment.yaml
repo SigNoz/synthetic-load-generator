@@ -5,7 +5,8 @@ metadata:
   labels:
     app: synthetic-load
 spec:
-  replicas: 8
+  replicas: 10
+  # replicas: 1
   selector:
     matchLabels:
       app: synthetic-load
@@ -17,11 +18,12 @@ spec:
       containers:
       - name: synthetic-load
         image: signoz/synthetic-load-generator:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         env:
         - name: JAEGER_COLLECTOR_URL
           value: http://otel-collector:14268
         - name: TOPOLOGY_FILE
-          value: ./topologies/100_000_spans_per_second.json
+          value: ./topologies/50_000_spans_per_second.json
           # value: ./topologies/hipster-shop.json
